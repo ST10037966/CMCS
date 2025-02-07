@@ -1,0 +1,63 @@
+﻿@model ContactMonthlyClaimSystem.Models.MonthlyClaim
+
+<h2>Submit a Claim</h2>
+
+<!-- 🔹 Success Alert: Display message if TempData contains SuccessMessage -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>@TempData["SuccessMessage"]</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="SubmitClaim" method="post">
+    <div class="form-group">
+        <label>Description of Work</label>
+        <input asp-for="Description" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Hours Worked</label>
+        <input asp-for="HoursWorked" id="hoursWorked" type="number" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Hourly Rate</label>
+        <input asp-for="HourlyRate" id="hourlyRate" type="number" class="form-control" required />
+    </div>
+
+    <div class="form-group">
+        <label>Total Amount</label>
+        <input id="totalAmount" type="text" class="form-control" readonly />
+    </div>
+
+    <div class="form-group">
+        <label>Submission Date</label>
+        <input asp-for="SubmissionDate" type="date" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" required />
+    </div>
+
+    <div class="form-group">
+        <label>Status</label>
+        <input asp-for="Status" class="form-control" value="Pending" readonly />
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+</form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let hoursWorked = document.getElementById("hoursWorked");
+        let hourlyRate = document.getElementById("hourlyRate");
+        let totalAmount = document.getElementById("totalAmount");
+
+        function updateTotal() {
+            let hours = parseFloat(hoursWorked.value) || 0;
+            let rate = parseFloat(hourlyRate.value) || 0;
+            totalAmount.value = (hours * rate).toFixed(2); // Auto-calculation
+        }
+
+        hoursWorked.addEventListener("input", updateTotal);
+        hourlyRate.addEventListener("input", updateTotal);
+    });
+</script>

@@ -1,0 +1,39 @@
+﻿@model IEnumerable<ContactMonthlyClaimSystem.Models.MonthlyClaim>
+
+<h2>Review Claims</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Description</th>
+            <th>Lecturer</th>
+            <th>Hours Worked</th>
+            <th>Hourly Rate</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var monthlyclaim in Model)
+        {
+            <tr>
+                <td>@monthlyclaim.Description</td>
+                <td>@(monthlyclaim.Lecturer != null ? monthlyclaim.Lecturer.FullName : "N/A")</td>
+                <td>@monthlyclaim.HoursWorked</td>
+                <td>@monthlyclaim.HourlyRate</td>
+                <td>@monthlyclaim.TotalAmount</td>
+                <td>@monthlyclaim.Status</td>
+                <td>
+                    <form asp-action="UpdateClaimStatus" method="post">
+                        <input type="hidden" name="id" value="@monthlyclaim.MonthlyClaimId" />
+                        <button name="status" value="Approved" class="btn btn-success">Approve</button>
+                        <button name="status" value="Rejected" class="btn btn-danger">Reject</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+ 
+
